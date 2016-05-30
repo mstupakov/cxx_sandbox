@@ -1,4 +1,7 @@
-OUTPUT ?= cpp_abi.a
+OUTPUT := cpp_abi.a
+
+C_FLAGS := -Ddouble=int -Dfloat=int
+CPP_FLAGS := -Ddouble=int -Dfloat=int
 
 C_SRCS := $(wildcard *.c)
 CPP_SRCS := $(wildcard *.cpp)

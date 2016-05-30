@@ -1,6 +1,6 @@
-OUTPUT ?= osapi.a
+OUTPUT := osapi.a
 
-BASE_DIR := $(PWD)
+BASE_DIR := $(CURDIR)
 
 I_DIR := $(BASE_DIR)/include/
 S_DIR := $(BASE_DIR)/kernelspace/

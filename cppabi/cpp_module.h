@@ -5,8 +5,8 @@
 extern "C" {
 #endif
 
-extern int cpp_module_init(void);
-extern void cpp_module_deinit(void);
+extern int cpp_module_init(void *param);
+extern int cpp_module_deinit(void *param);
 
 #ifdef __cplusplus
 }

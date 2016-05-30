@@ -1,4 +1,4 @@
-OUTPUT ?= stl.a
+OUTPUT := stl.a
 
 C_SRCS := $(wildcard *.c)
 CPP_SRCS := $(wildcard *.cpp)

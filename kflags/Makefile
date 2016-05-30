@@ -1,5 +1,5 @@
-TARGET := dummy_module
-obj-m += $(TARGET).o
+D_TARGET := dummy_module
+obj-m += $(D_TARGET).o
 
 export _CC := $(CC)
 CC := $(M)/get_flags
