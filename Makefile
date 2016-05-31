@@ -70,7 +70,7 @@ $(B_DIR)/$(O_OBJ):
 	make -C $(O_DIR) OUTPUT=$@ E_CFLAGS="$(E_CFLAGS)"
 
 $(B_DIR)/$(S_OBJ):
-	make -C $(S_DIR) OUTPUT=$@
+	make -C $(S_DIR) OUTPUT=$@ E_CFLAGS="$(E_CFLAGS)"
 
 $(B_DIR)/$(X_OBJ):
 	make -C $(X_DIR) OUTPUT=$@ E_CFLAGS="$(E_CFLAGS)"
