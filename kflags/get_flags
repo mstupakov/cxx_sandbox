@@ -3,9 +3,16 @@
 echo "CROSS_COMPILE: " ${CROSS_COMPILE}
 echo "NOSTDINC_FLAGS: " ${NOSTDINC_FLAGS}
 echo "KBUILD_CFLAGS: " ${KBUILD_CFLAGS}
+echo "LINUXINCLUDE: " ${LINUXINCLUDE}
 
 echo K_CROSSCOMPILE := ${CROSS_COMPILE} > ${OUTPUT}
 echo K_NOSTDINC := ${NOSTDINC_FLAGS} >> ${OUTPUT}
 echo K_CFLAGS := ${KBUILD_CFLAGS} >> ${OUTPUT}
+
+INC=$(echo ${LINUXINCLUDE} | sed -n -e 's/.*-include//p1' | sed -e 's/^[ \t]*//' | awk '{print $1}')
+LXINCLUDE=$(echo ${LINUXINCLUDE} | sed "s|${INC}|${PWD}/${INC}|g")
+LXINCLUDE=$(echo ${LXINCLUDE} | sed "s|-I|-I/${PWD}/|g")
+
+echo K_LXINCLUDE := ${LXINCLUDE} >> ${OUTPUT}
 
 ${CROSS_COMPILE}${_CC} $@

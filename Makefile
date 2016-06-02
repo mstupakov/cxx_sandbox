@@ -37,8 +37,12 @@ E_CFLAGS += -fno-fast-math
 E_CFLAGS += -msoft-float 
 E_CFLAGS += -mtune=generic 
 E_CFLAGS += -O3 -nostdinc++ 
-E_CFLAGS += -I/development/kernel_cpp_sandbox/stl/include/ustl 
-E_CFLAGS += -I/development/kernel_cpp_sandbox/stl/include/ -D__NO_INLINE__
+E_CFLAGS += -D__NO_INLINE__
+
+LNX_INCS := $(K_LXINCLUDE)
+USR_INCS := $(K_NOSTDINC)
+STD_INCS := 
+STL_INCS := -I$(S_DIR)/include/ -I$(S_DIR)/include/ustl/
 
 
 all: $(TARGET)
@@ -73,7 +77,7 @@ $(B_DIR)/$(S_OBJ):
 	make -C $(S_DIR) OUTPUT=$@ E_CFLAGS="$(E_CFLAGS)"
 
 $(B_DIR)/$(X_OBJ):
-	make -C $(X_DIR) OUTPUT=$@ E_CFLAGS="$(E_CFLAGS)"
+	make -C $(X_DIR) OUTPUT=$@ E_CFLAGS="$(E_CFLAGS) $(STL_INCS)"
 
 $(B_DIR)/$(E_OBJS): $(addprefix $(B_DIR)/,$(I_OBJS))
 	$(CROSS_COMPILE)$(LD) --whole-archive -Ur -T$(K_DIR)/ld_script.lds $^ -o $@ 
