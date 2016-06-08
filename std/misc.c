@@ -10,6 +10,7 @@
 
 #define ___USER___
 #include <k_io.h>
+#include <k_sort.h>
 
 void __assert_fail(void) {}
 
@@ -37,4 +38,9 @@ int rand_r(unsigned int *seedp) {
 }
 
 void srand(unsigned int seed) {
+}
+
+void qsort(void *base, size_t nmemb, size_t size,
+           int (*compar)(const void *, const void *)) {
+  __k_sort(base, nmemb, size, compar, NULL);
 }
