@@ -11,7 +11,9 @@ echo K_CFLAGS := ${KBUILD_CFLAGS} >> ${OUTPUT}
 
 INC=$(echo ${LINUXINCLUDE} | sed -n -e 's/.*-include//p1' | sed -e 's/^[ \t]*//' | awk '{print $1}')
 LXINCLUDE=$(echo ${LINUXINCLUDE} | sed "s|${INC}|${PWD}/${INC}|g")
+LXINCLUDE+=" $(echo ${KBUILD_CFLAGS} | grep -o '\-I\S*')"
 LXINCLUDE=$(echo ${LXINCLUDE} | sed "s|-I|-I/${PWD}/|g")
+LXINCLUDE=$(echo ${LXINCLUDE} | sed "s|${PWD}/${PWD}|${PWD}/|g")
 
 echo K_LXINCLUDE := ${LXINCLUDE} >> ${OUTPUT}
 

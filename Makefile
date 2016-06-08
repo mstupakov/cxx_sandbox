@@ -3,10 +3,10 @@ KERNEL_SRC := /lib/modules/$(shell uname -r)/build
 
 BASE_DIR := $(PWD)
 
-K_FLAGS := kflags
+K_FLAGS := kflags.mk
 
 A_OBJ := abi++.a
-O_OBJ := osapi.a
+O_OBJ := std.a
 S_OBJ := stl.a
 X_OBJ := test.a
 
@@ -14,8 +14,8 @@ I_OBJS := $(A_OBJ) $(O_OBJ) $(S_OBJ) $(X_OBJ)
 E_OBJS := kernel_objs.o
 
 M_DIR := $(BASE_DIR)/module/
-A_DIR := $(BASE_DIR)/cppabi/
-O_DIR := $(BASE_DIR)/osapi/
+A_DIR := $(BASE_DIR)/cxxabi/
+O_DIR := $(BASE_DIR)/std/
 S_DIR := $(BASE_DIR)/stl/
 X_DIR := $(BASE_DIR)/test/
 F_DIR := $(BASE_DIR)/kflags/
@@ -37,7 +37,7 @@ E_CFLAGS += -fno-fast-math
 E_CFLAGS += -msoft-float 
 E_CFLAGS += -mtune=generic 
 E_CFLAGS += -O3 -nostdinc++ 
-E_CFLAGS += -D__NO_INLINE__
+E_CFLAGS += -D__NO_INLINE__ -D__KERNEL__ -DMODULE
 
 LNX_INCS := $(K_LXINCLUDE)
 USR_INCS := $(K_NOSTDINC)
@@ -71,7 +71,7 @@ $(B_DIR)/$(A_OBJ):
 	make -C $(A_DIR) OUTPUT=$@ E_CFLAGS="$(E_CFLAGS)"
 
 $(B_DIR)/$(O_OBJ):
-	make -C $(O_DIR) OUTPUT=$@ E_CFLAGS="$(E_CFLAGS)"
+	make -C $(O_DIR) OUTPUT=$@ E_CFLAGS="$(E_CFLAGS) $(LNX_INCS)"
 
 $(B_DIR)/$(S_OBJ):
 	make -C $(S_DIR) OUTPUT=$@ E_CFLAGS="$(E_CFLAGS)"

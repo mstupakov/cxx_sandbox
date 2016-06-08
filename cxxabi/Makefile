@@ -1,4 +1,4 @@
-OUTPUT := cpp_abi.a
+OUTPUT := abi++.a
 
 C_FLAGS := -Ddouble=int -Dfloat=int
 CPP_FLAGS := -Ddouble=int -Dfloat=int

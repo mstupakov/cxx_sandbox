@@ -5,18 +5,17 @@
  * This file is free software, distributed under the MIT License.
  */
 
+#include <k_delay.h>
 #include <linux/module.h>
 #include <linux/kernel.h>
-#include <linux/init.h>
+#include <linux/delay.h>
 
-static int __init dummy_module_init(void) {
+int __k_usleep(unsigned int usec) {
+  udelay(usec);
   return 0;
 }
 
-static void __exit dummy_module_exit(void) {
+unsigned int __k_sleep(unsigned int seconds) {
+  ssleep(seconds);
+  return 0;
 }
-
-module_init(dummy_module_init);
-module_exit(dummy_module_exit);
-
-MODULE_LICENSE("GPL");
