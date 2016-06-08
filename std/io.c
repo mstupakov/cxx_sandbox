@@ -8,7 +8,6 @@
 #include <stdio.h>
 #include <stdarg.h>
 
-#define ___USER___
 #include <k_io.h>
 
 int __printf_chk(int __flag, const char *__restrict __format, ...) {

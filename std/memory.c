@@ -8,7 +8,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define ___USER___
 #include <k_memory.h>
 
 typedef struct {

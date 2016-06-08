@@ -7,7 +7,6 @@
 
 #include <unistd.h>
 
-#define ___USER___
 #include <k_delay.h>
 
 int usleep(unsigned int usec) {

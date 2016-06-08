@@ -8,7 +8,6 @@
 #include <stdlib.h>
 #include <libgen.h>
 
-#define ___USER___
 #include <k_io.h>
 #include <k_sort.h>
 
