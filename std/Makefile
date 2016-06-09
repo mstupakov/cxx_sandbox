@@ -14,17 +14,17 @@ CPP_KSRCS := $(wildcard $(K_DIR)/*.cpp)
 OBJS := $(C_SRCS:%.c=%.o) $(CPP_SRCS:%.cpp=%.o)
 KOBJS := $(C_KSRCS:%.c=%.o) $(CPP_KSRCS:%.cpp=%.o)
 
-%.o: %.c
-	$(CROSS_COMPILE)$(CC) $(C_FLAGS) $(E_CFLAGS) $(K_INC) -D___USER___ -c $<
-
-%.o: %.cpp
-	$(CROSS_COMPILE)$(CC) $(CPP_FLAGS) $(E_CFLAGS) $(K_INC) -D___USER___ -c $<
-
 $(K_DIR)/%.o: $(K_DIR)/%.c
 	$(CROSS_COMPILE)$(CC) $(C_FLAGS) $(E_CFLAGS) $(K_INC) -c $< -o $@
 
 $(K_DIR)/%.o: $(K_DIR)/%.cpp
 	$(CROSS_COMPILE)$(CC) $(CPP_FLAGS) $(E_CFLAGS) $(K_INC) -c $< -o $@
+
+%.o: %.c
+	$(CROSS_COMPILE)$(CC) $(C_FLAGS) $(E_CFLAGS) $(K_INC) -D___USER___ -c $<
+
+%.o: %.cpp
+	$(CROSS_COMPILE)$(CC) $(CPP_FLAGS) $(E_CFLAGS) $(K_INC) -D___USER___ -c $<
 
 all: $(OUTPUT)
 

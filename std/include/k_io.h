@@ -12,9 +12,10 @@
 #include <linux/module.h>
 #include <linux/kernel.h>
 #else
-#include <stdio.h>
+#include <stdarg.h>
 #endif
 
+int __k_vsnprintf(char *buf, size_t size, const char *fmt, va_list args);
 int __k_vprintf(const char *format, va_list args);
 
 int __k_kstrtoul(const char *s, unsigned int base, unsigned long *res);

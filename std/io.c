@@ -10,6 +10,11 @@
 
 #include <k_io.h>
 
+int __vsnprintf_chk(char * s, size_t maxlen, int flag, 
+                    size_t slen, const char * format, va_list args) {
+  return __k_vsnprintf(s, maxlen, format, args);
+}
+
 int __printf_chk(int __flag, const char *__restrict __format, ...) {
   int n = 0;
 

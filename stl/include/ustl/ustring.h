@@ -340,7 +340,7 @@ STRING_TO_INT_CONVERTER(stoull,unsigned long long,strtoull)
 #undef STRING_TO_INT_CONVERTER
 
 #define STRING_TO_FLOAT_CONVERTER(name,type,func) \
-enline type name (const string& str, size_t* idx = nullptr) \
+inline type name (const string& str, size_t* idx = nullptr) \
 {					\
     const char* sp = str.c_str();	\
     char* endp = nullptr;		\
@@ -349,9 +349,11 @@ enline type name (const string& str, size_t* idx = nullptr) \
 	*idx = endp - sp;		\
     return r;				\
 }
-//STRING_TO_FLOAT_CONVERTER(stof,float,strtof)
-//STRING_TO_FLOAT_CONVERTER(stod,double,strtod)
-//STRING_TO_FLOAT_CONVERTER(stold,long double,strtold)
+#ifdef _SM_NOFLOAT
+STRING_TO_FLOAT_CONVERTER(stof,float,strtof)
+STRING_TO_FLOAT_CONVERTER(stod,double,strtod)
+STRING_TO_FLOAT_CONVERTER(stold,long double,strtold)
+#endif /* _SM_NOFLOAT */
 #undef STRING_TO_FLOAT_CONVERTER
 
 #define NUMBER_TO_STRING_CONVERTER(type,fmts)\
@@ -363,9 +365,11 @@ NUMBER_TO_STRING_CONVERTER(unsigned long,"%lu")
 NUMBER_TO_STRING_CONVERTER(long long,"%lld")
 NUMBER_TO_STRING_CONVERTER(unsigned long long,"%llu")
 #endif
-//NUMBER_TO_STRING_CONVERTER(float,"%f")
-//NUMBER_TO_STRING_CONVERTER(double,"%lf")
-//NUMBER_TO_STRING_CONVERTER(long double,"%Lf")
+#ifdef _SM_NOFLOAT
+NUMBER_TO_STRING_CONVERTER(float,"%f")
+NUMBER_TO_STRING_CONVERTER(double,"%lf")
+NUMBER_TO_STRING_CONVERTER(long double,"%Lf")
+#endif /* _SM_NOFLOAT */
 #undef NUMBER_TO_STRING_CONVERTER
 
 } // namespace ustl

@@ -44,9 +44,11 @@ public:
     void			iread (long long& v);
     inline void			iread (unsigned long long& v)	{ long long c; iread(c); v = c; }
 #endif
+#ifdef _SM_NOFLOAT
     void			iread (double& v);
     inline void			iread (float& v)		{ double c; iread(c); v = c; }
     inline void			iread (long double& v)		{ double c; iread(c); v = c; }
+#endif /* _SM_NOFLOAT */
     void			iread (bool& v);
     void			iread (wchar_t& v);
     void			iread (string& v);

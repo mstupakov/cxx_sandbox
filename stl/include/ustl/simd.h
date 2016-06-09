@@ -104,10 +104,14 @@ STD_CONVERSION_FUNCTOR (fround, (reset_mmx(), D(rintf(a))))
 #else
 STD_CONVERSION_FUNCTOR (fround, (reset_mmx(), D(rint(a))))
 #endif
+#ifdef _SM_NOFLOAT
 template <> inline int32_t fround<double,int32_t>::operator()(const double& a) const { reset_mmx(); return int32_t(rint(a)); }
+#endif /* _SM_NOFLOAT */
 #endif
-//template <> inline float fpavg<float>::operator()(const float& a, const float& b) const { return (a + b) / 2; }
-//template <> inline double fpavg<double>::operator()(const double& a, const double& b) const { return (a + b) / 2; }
+#ifdef _SM_NOFLOAT
+template <> inline float fpavg<float>::operator()(const float& a, const float& b) const { return (a + b) / 2; }
+template <> inline double fpavg<double>::operator()(const double& a, const double& b) const { return (a + b) / 2; }
+#endif /* _SM_NOFLOAT */
 
 #define SIMD_PACKEDOP1(name, operation)		\
 template <typename Ctr>				\
@@ -217,9 +221,11 @@ typedef uint32_t v4si_t VECTOR_ATTRIBUTE (V4SI,16);
 #if HAVE_INT64_T
 typedef uint64_t v1di_t VECTOR_ATTRIBUTE (V1DI,8);
 #endif
+#ifdef _SM_NOFLOAT
 typedef float v2sf_t VECTOR_ATTRIBUTE (V2SF,8);
 typedef float v4sf_t VECTOR_ATTRIBUTE (V4SF,16);
 typedef double v2df_t VECTOR_ATTRIBUTE (V2DF,16);
+#endif /* _SM_NOFLOAT */
 #undef VECTOR_ATTRIBUTE
 
 #define SIMDA_RI(n)		"m"(oin[n])
@@ -352,6 +358,8 @@ MMX_PKOP2_SPEC(4,int16_t,fpmax,pmaxsw)
 MMX_PKOP2_SPEC(4,int16_t,fpmin,pminsw)
 #endif // CPU_HAS_SSE || CPU_HAS_3DNOW
 
+
+#ifdef _SM_NOFLOAT
 #if CPU_HAS_3DNOW
 MMX_PASSIGN_SPEC(2,float)
 MMX_PKOP2_SPEC(2,float,plus,pfadd)
@@ -367,17 +375,24 @@ MMX_DBL_PKOP2_SPEC(4,float,fpmin,pfmin)
 MMX_DBL_PKOP2_SPEC(4,float,fpmax,pfmax)
 #endif
 #endif // CPU_HAS_3DNOW
+#endif /* _SM_NOFLOAT */
 
 MMX_IPASSIGN_SPEC(8,uint8_t)
 MMX_IPASSIGN_SPEC(4,uint16_t)
 MMX_IPASSIGN_SPEC(2,uint32_t)
+#ifdef _SM_NOFLOAT
 MMX_IPASSIGN_SPEC(2,float)
+#endif /* _SM_NOFLOAT */
 
 #ifndef CPU_HAS_SSE
+#ifdef _SM_NOFLOAT
 MMX_DBL_PASSIGN_SPEC(4,float)
+#endif /* _SM_NOFLOAT */
 MMX_DBL_PASSIGN_SPEC(4,uint32_t)
 MMX_DBL_PASSIGN_SPEC(4,int32_t)
+#ifdef _SM_NOFLOAT
 MMX_DBL_IPASSIGN_SPEC(4,float)
+#endif /* _SM_NOFLOAT */
 MMX_DBL_IPASSIGN_SPEC(4,uint32_t)
 MMX_DBL_IPASSIGN_SPEC(4,int32_t)
 #endif
@@ -388,6 +403,7 @@ MMX_DBL_IPASSIGN_SPEC(4,int32_t)
 #undef STD_MMX_ARGS
 #endif // CPU_HAS_MMX
 
+#ifdef _SM_NOFLOAT
 #if CPU_HAS_SSE
 #define STD_SSE_ARGS	: "m"(oout[0]), "m"(oin[0]) : "xmm0", "memory"
 #define SSE_PKOP2_SPEC(n,type,optype,instruction)	\
@@ -451,6 +467,7 @@ SSE_IPASSIGN_SPEC(4,uint32_t)
 #undef SSE_PKOP2_SPEC
 #undef STD_SSE_ARGS
 #endif // CPU_HAS_SSE
+#endif /* _SM_NOFLOAT */
 
 #undef SIMDA_RI
 #undef SIMDA_RO

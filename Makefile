@@ -74,7 +74,7 @@ $(B_DIR)/$(O_OBJ):
 	make -C $(O_DIR) OUTPUT=$@ E_CFLAGS="$(E_CFLAGS) $(LNX_INCS)"
 
 $(B_DIR)/$(S_OBJ):
-	make -C $(S_DIR) OUTPUT=$@ E_CFLAGS="$(E_CFLAGS)"
+	make -C $(S_DIR) OUTPUT=$@ E_CFLAGS="$(E_CFLAGS) $(LNX_INCS)"
 
 $(B_DIR)/$(X_OBJ):
 	make -C $(X_DIR) OUTPUT=$@ E_CFLAGS="$(E_CFLAGS) $(STL_INCS)"

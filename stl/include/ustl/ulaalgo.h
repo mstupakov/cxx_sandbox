@@ -61,6 +61,8 @@ void transpose (matrix<N,N,T>& m)
 	    swap (m[x][y], m[y][x]);
 }
 
+#ifdef _SM_NOFLOAT
+
 #if WANT_UNROLLED_COPY
 
 #if CPU_HAS_SSE
@@ -213,4 +215,5 @@ template <> inline tuple<4,float> operator* (const tuple<4,float>& t, const matr
 #endif	// CPU_HAS_3DNOW
 #endif	// WANT_UNROLLED_COPY
 
+#endif /* _SM_NOFLOAT */
 } // namespace ustl

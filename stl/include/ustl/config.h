@@ -56,9 +56,9 @@
     #define INLINE
 #endif
 #if __cplusplus >= 201103 && (!__GNUC__ || (__clang_major__ > 3 || (__clang_major__ == 3 && __clang_minor__ >= 2)) || (__GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 6)))
-    #define HAVE_CPP11 0
+    #define HAVE_CPP11 1
     #if __cplusplus >= 201402
-	#define HAVE_CPP14 0
+	#define HAVE_CPP14 1
     #endif
 #endif
 #if !HAVE_CPP11
@@ -112,7 +112,7 @@
 #define HAVE_FCNTL_H 1
 
 /// Define to 1 if you have the <float.h> header file.
-#define HAVE_FLOAT_H 0
+#define HAVE_FLOAT_H 1
 
 /// Define to 1 if you have the <inttypes.h> header file.
 #define HAVE_INTTYPES_H 1
@@ -186,7 +186,7 @@
 #define HAVE_RINTF 1
 
 // STDC_HEADERS is defined to 1 on sane systems.
-#if HAVE_ASSERT_H && HAVE_CTYPE_H  && HAVE_ERRNO_H &&\
+#if HAVE_ASSERT_H && HAVE_CTYPE_H  && HAVE_ERRNO_H && HAVE_FLOAT_H &&\
     HAVE_LIMITS_H && HAVE_LOCALE_H && HAVE_MATH_H  && HAVE_SIGNAL_H &&\
     HAVE_STDARG_H && HAVE_STDDEF_H && HAVE_STDIO_H && HAVE_STDLIB_H &&\
     HAVE_STRING_H && HAVE_TIME_H

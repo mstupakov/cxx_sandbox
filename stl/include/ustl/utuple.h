@@ -243,7 +243,9 @@ template<> inline void tuple<n,type>::swap (tuple<n,type>& v)			\
 	"movups %%xmm0,%1\n\tmovups %%xmm1,%0"					\
 	: "+m"(_v[0]), "+m"(v._v[0]) :: "xmm0","xmm1","memory");		\
 }
+#ifdef _SM_NOFLOAT
 SSE_TUPLE_SPECS(4,float)
+#endif /* _SM_NOFLOAT */
 SSE_TUPLE_SPECS(4,int32_t)
 SSE_TUPLE_SPECS(4,uint32_t)
 #undef SSE_TUPLE_SPECS
@@ -258,7 +260,9 @@ template<> inline void tuple<n,type>::swap (tuple<n,type>& v)	\
   iter_swap (noalias_cast<long*>(_v), noalias_cast<long*>(v._v));	\
   asm("":"+m"(_v[0]),"+m"(v._v[0])::"memory");			\
 }
+#ifdef _SM_NOFLOAT
 LONG_TUPLE_SPECS(2,float)
+#endif /* _SM_NOFLOAT */
 LONG_TUPLE_SPECS(4,int16_t)
 LONG_TUPLE_SPECS(4,uint16_t)
 LONG_TUPLE_SPECS(2,int32_t)
@@ -277,7 +281,9 @@ template<> inline void tuple<n,type>::swap (tuple<n,type>& v)		\
 	:"=m"(_v[0]),"=m"(v._v[0]):"m"(_v[0]),"m"(v._v[0]):"mm0","mm1","st","st(1)","memory"); \
    simd::reset_mmx();							\
 }
+#ifdef _SM_NOFLOAT
 MMX_TUPLE_SPECS(2,float)
+#endif /* _SM_NOFLOAT */
 MMX_TUPLE_SPECS(4,int16_t)
 MMX_TUPLE_SPECS(4,uint16_t)
 MMX_TUPLE_SPECS(2,int32_t)
@@ -348,9 +354,11 @@ template <> inline tuple<N,T> operator* (const tuple<N,T>& t1, const tuple<N,T>&
     { tuple<N,T> result (t1); simd::pmul (t2, result); return result; }		\
 template <> inline tuple<N,T> operator/ (const tuple<N,T>& t1, const tuple<N,T>& t2)	\
     { tuple<N,T> result (t1); simd::pdiv (t2, result); return result; }
-//SIMD_TUPLE_PACKOP(4,float)
-//SIMD_TUPLE_PACKOP(2,float)
-//SIMD_TUPLE_PACKOP(2,double)
+#ifdef _SM_NOFLOAT
+SIMD_TUPLE_PACKOP(4,float)
+SIMD_TUPLE_PACKOP(2,float)
+SIMD_TUPLE_PACKOP(2,double)
+#endif /* _SM_NOFLOAT */
 SIMD_TUPLE_PACKOP(4,int32_t)
 SIMD_TUPLE_PACKOP(4,uint32_t)
 SIMD_TUPLE_PACKOP(4,int16_t)

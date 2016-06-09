@@ -71,7 +71,7 @@ inline typename matrix<NX,NY,T>::column_type matrix<NX,NY,T>::column (size_type 
 
 //----------------------------------------------------------------------
 // Define SIMD specializations for member functions.
-
+#ifdef _SM_NOFLOAT
 #if CPU_HAS_SSE
 #define MATRIX_R(v)		"m"(v[0]),"m"(v[4]),"m"(v[8]),"m"(v[12])
 #define MATRIX_W(v)		"=m"(v[0]),"=m"(v[4]),"=m"(v[8]),"=m"(v[12])
@@ -113,5 +113,6 @@ SSE_TUPLE_SPECS(16,uint32_t)
 #undef MATRIX_R
 #undef MATRIX_W
 #endif
+#endif /* _SM_NOFLOAT */
 
 } // namespace ustl

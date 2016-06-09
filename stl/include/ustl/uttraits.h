@@ -166,9 +166,11 @@ UNARY_TRAIT_TRUE (__is_signed, long long);
 UNARY_TRAIT_DEFB (is_signed, __is_signed<remove_cv_t<T>>::value);
 
 UNARY_TRAIT_DEFN (__is_floating_point);
+#ifdef _SM_NOFLOAT
 UNARY_TRAIT_TRUE (__is_floating_point, float);
 UNARY_TRAIT_TRUE (__is_floating_point, double);
 UNARY_TRAIT_TRUE (__is_floating_point, long double);
+#endif /* _SM_NOFLOAT */
 UNARY_TRAIT_DEFB (is_floating_point, __is_floating_point<remove_cv_t<T>>::value);
 
 template <typename T> struct __is_pointer : public false_type {};

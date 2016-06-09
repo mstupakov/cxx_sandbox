@@ -5,22 +5,12 @@
  * This file is free software, distributed under the MIT License.
  */
 
-#include <stdio.h>
+#include <fcntl.h>
 
-void test_cpp(void);
-
-extern "C" {
-
-int cxx_module_init(void *param) {
-  printf("Hello Module!\r\n");
-
-  test_cpp();
+int fcntl(int fd, int cmd, ... /* arg */ ) {
   return 0;
 }
 
-int cxx_module_deinit(void *param) {
-  printf("Goodbye!\r\n");
+int fsync(int fd) {
   return 0;
 }
-
-} /* extern "C" */

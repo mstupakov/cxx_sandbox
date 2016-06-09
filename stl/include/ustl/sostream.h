@@ -34,9 +34,11 @@ public:
     inline void			iwrite (unsigned int v)		{ iformat (v); }
     inline void			iwrite (long int v)		{ iformat (v); }
     inline void			iwrite (unsigned long int v)	{ iformat (v); }
+#ifdef _SM_NOFLOAT
     inline void			iwrite (float v)		{ iformat (v); }
     inline void			iwrite (double v)		{ iformat (v); }
     inline void			iwrite (long double v)		{ iformat (v); }
+#endif /* _SM_NOFLOAT */
     void			iwrite (bool v);
     inline void			iwrite (const char* s)		{ write (s, strlen(s)); }
     inline void			iwrite (const unsigned char* s)	{ iwrite ((const char*) s); }
@@ -96,9 +98,11 @@ PRINTF_TYPESTRING_SPEC (int,		"d")
 PRINTF_TYPESTRING_SPEC (unsigned int,	"u")
 PRINTF_TYPESTRING_SPEC (long,		"ld")
 PRINTF_TYPESTRING_SPEC (unsigned long,	"lu")
+#ifdef _SM_NOFLOAT
 PRINTF_TYPESTRING_SPEC (float,		"f")
 PRINTF_TYPESTRING_SPEC (double,		"lf")
 PRINTF_TYPESTRING_SPEC (long double,	"Lf")
+#endif /* _SM_NOFLOAT */
 #if HAVE_LONG_LONG
 PRINTF_TYPESTRING_SPEC (long long,	"lld")
 PRINTF_TYPESTRING_SPEC (unsigned long long, "llu")
