@@ -19,7 +19,10 @@
 #include <k_io.h>
 #include <k_sort.h>
 
-void __assert_fail(void) {}
+void __assert_fail(void) {
+  printf("Assert: there is a BUG! The program MUST be terminated!\r\n");
+  sleep(20);
+}
 
 long int strtol(const char *nptr, char **endptr, int base) {   
   long res = 0;
