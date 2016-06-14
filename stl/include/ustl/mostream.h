@@ -254,6 +254,14 @@ template <typename T> struct object_writer {
 template <typename T> struct integral_object_writer {
     inline void operator()(ostream& os, const T& v) const { os.iwrite (v); }
 };
+#ifdef _SM_ADD
+inline ostream& operator<< (ostream& os, const char *v) {
+    typedef typename tm::Select <numeric_limits<string>::is_integral,
+	integral_object_writer<string>, object_writer<string> >::Result object_writer_t;
+    object_writer_t()(os, string(v));
+    return os;
+}
+#endif
 template <typename T>
 inline ostream& operator<< (ostream& os, const T& v) {
     typedef typename tm::Select <numeric_limits<T>::is_integral,
