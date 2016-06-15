@@ -7,8 +7,7 @@
 
 #include <math.h>
 
-#if 0
-long signed int pow_local(long signed int x, long signed int y) {
+static long signed int pow_local(long signed int x, long signed int y) {
   int i = 0;
   long signed int res = 1;
 
@@ -39,14 +38,13 @@ long signed int ceill(long signed int x) {
 }
 
 long signed int log2(long signed int x) {
-  return 0;
+  return __k_ilog2(x);
 }
 
 signed int log2f(signed int x) {
   return 0;
 }
 
-double log2l(double x) {
+signed int log2l(signed int x) {
   return 0;
 }
-#endif
