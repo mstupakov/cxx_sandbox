@@ -19,4 +19,4 @@ void __k_sort(void *base, size_t num, size_t size,
               int (*cmp)(const void *, const void *),
               void (*swap)(void *, void *, int));
 
-#endif /* __SORT_H__ */
+#endif /* __K_SORT_H__ */

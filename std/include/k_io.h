@@ -23,4 +23,4 @@ int __k_kstrtoll(const char *s, unsigned int base, long long *res);
 
 void __k_get_random_bytes(void *buf, int nbytes);
 
-#endif /* __IOLIB_H__ */
+#endif /* __K_IOLIB_H__ */

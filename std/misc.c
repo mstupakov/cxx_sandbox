@@ -18,9 +18,12 @@
 
 #include <k_io.h>
 #include <k_sort.h>
+#include <k_misc.h>
 
 void __assert_fail(void) {
   printf("Assert: there is a BUG! The program MUST be terminated!\r\n");
+
+  __k_dumpstack();
   sleep(20);
 }
 

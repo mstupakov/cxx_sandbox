@@ -11,4 +11,4 @@
 void* __k_malloc(long unsigned int sz);
 void __k_free(void* p);
 
-#endif /* __MEMORY_H__ */
+#endif /* __K_MEMORY_H__ */

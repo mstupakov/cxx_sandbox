@@ -5,10 +5,14 @@
  * This file is free software, distributed under the MIT License.
  */
 
-#ifndef __DELAY_H__
-#define __DELAY_H__
+#ifndef __K_MISC_H__
+#define __K_MISC_H__
 
-int __k_usleep(unsigned int usec);
-unsigned int __k_sleep(unsigned int seconds);
+#ifndef ___USER___
+#include <linux/module.h>
+#include <linux/kernel.h>
+#endif
 
-#endif /* __K_DELAY_H__ */
+void __k_dumpstack(void);
+
+#endif /* __K_MISC_H__ */
