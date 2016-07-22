@@ -163,7 +163,7 @@
 #define HAVE_SYS_TYPES_H 1
 
 // Define to 1 if you have the <sys/mman.h> header file.
-#define HAVE_SYS_MMAN_H 1
+#define HAVE_SYS_MMAN_H 0
 
 // Define to 1 if you have the <time.h> header file.
 #define HAVE_TIME_H 1
@@ -175,7 +175,7 @@
 #define HAVE_MATH_H 1
 
 // Define to 1 if you have the <execinfo.h> header file.
-#define HAVE_EXECINFO_H 1
+#define HAVE_EXECINFO_H 0
 
 // Define to 1 if you have the <cxxabi.h> header file.
 #if __GNUC__ >= 3

@@ -6,6 +6,7 @@
  */
 
 #include <k_math.h>
+
 #include <linux/kernel.h>
 #include <linux/module.h>
 

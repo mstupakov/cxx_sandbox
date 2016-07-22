@@ -5,10 +5,12 @@
  * This file is free software, distributed under the MIT License.
  */
 
-#ifndef __MEMORY_H__
-#define __MEMORY_H__
+#ifndef __K_MEMORY_H__
+#define __K_MEMORY_H__
 
-void* __k_malloc(long unsigned int sz);
-void __k_free(void* p);
+void* __k_vmalloc(long unsigned int sz);
+void __k_vfree(void* p);
+void* __k_kmalloc(long unsigned int sz);
+void __k_kfree(void* p);
 
 #endif /* __K_MEMORY_H__ */

@@ -5,10 +5,14 @@
  * This file is free software, distributed under the MIT License.
  */
 
-#include <k_misc.h>
+#include <k_sort.h>
+
 #include <linux/kernel.h>
 #include <linux/module.h>
+#include <linux/sort.h>
 
-void __k_dumpstack(void) {
-  dump_stack();
+void __k_sort(void *base, size_t num, size_t size,
+              int (*cmp)(const void *, const void *),
+              void (*swap)(void *, void *, int)) {
+  sort(base, num, size, cmp, swap);
 }

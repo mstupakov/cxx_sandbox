@@ -9,10 +9,10 @@
 
 #include <k_delay.h>
 
-int usleep(unsigned int usec) {
+int __attribute__((weak)) usleep(unsigned int usec) {
   return __k_usleep(usec);
 }
 
-unsigned int sleep(unsigned int seconds) {
+unsigned int __attribute__((weak)) sleep(unsigned int seconds) {
   return __k_sleep(seconds);
 }

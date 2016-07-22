@@ -49,9 +49,13 @@ ofstream::ofstream (const char* filename, openmode mode)
 /// Default destructor.
 ofstream::~ofstream (void) noexcept
 {
-#ifdef _SM_NOFLOAT
-    try { flush(); } catch (...) {}
-#endif /* _SM_NOFLOAT */
+#ifdef _SM_NOEXCEPTION
+    try { 
+#endif /* _SM_NOEXCEPTION */
+        flush(); 
+#ifdef _SM_NOEXCEPTION
+    } catch (...) {}
+#endif /* _SM_NOEXCEPTION */
     if (_file.fd() <= STDERR_FILENO)	// Do not close cin,cout,cerr
 	_file.detach();
 }

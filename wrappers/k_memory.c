@@ -6,14 +6,29 @@
  */
 
 #include <k_memory.h>
+
 #include <linux/kernel.h>
 #include <linux/module.h>
 #include <linux/vmalloc.h>
+#include <linux/slab.h>
+#include <linux/interrupt.h>
 
-void* __k_malloc(long unsigned int sz) {
+void* __k_vmalloc(long unsigned int sz) {
   return vmalloc(sz);
 }
 
-void __k_free(void* p) {
+void __k_vfree(void* p) {
   return vfree(p);
+}
+
+void* __k_kmalloc(long unsigned int sz) {
+  if (in_interrupt()) {
+    return kmalloc(sz, GFP_ATOMIC);
+  }
+
+  return kmalloc(sz, GFP_KERNEL);
+}
+
+void __k_kfree(void* p) {
+  return kfree(p);
 }

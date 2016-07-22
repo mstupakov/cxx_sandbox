@@ -6,11 +6,14 @@
  */
 
 #include <fcntl.h>
+#include <stdio.h>
 
-int fcntl(int fd, int cmd, ... /* arg */ ) {
-  return 0;
+int __attribute__((weak)) fcntl(int fd, int cmd, ... /* arg */ ) {
+  printf("Func: %s, line: %u\r\n", __PRETTY_FUNCTION__, __LINE__);
+  return -1;
 }
 
-int fsync(int fd) {
-  return 0;
+int __attribute__((weak)) fsync(int fd) {
+  printf("Func: %s, line: %u\r\n", __PRETTY_FUNCTION__, __LINE__);
+  return -1;
 }

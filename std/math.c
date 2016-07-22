@@ -7,6 +7,8 @@
 
 #include <math.h>
 
+#include <k_math.h>
+
 static long signed int pow_local(long signed int x, long signed int y) {
   int i = 0;
   long signed int res = 1;
@@ -18,33 +20,37 @@ static long signed int pow_local(long signed int x, long signed int y) {
   return res;
 }
 
-long signed int pow(long signed int x, long signed int y) {   
+long signed int __attribute__((weak)) pow(long signed int x, long signed int y) {   
   if (x == 2) {   
     return (1 << y);
   }
   return pow_local(x, y);
 }
 
-long signed int ceil(long signed int x) {
-  return 0;
+long signed int __attribute__((weak)) ceil(long signed int x) {
+  return x;
 }
 
-signed int ceilf(signed int x) {
-  return 0;
+signed int __attribute__((weak)) ceilf(signed int x) {
+  return x;
 }
 
-long signed int ceill(long signed int x) {
-  return 0;
+long signed int __attribute__((weak)) ceill(long signed int x) {
+  return x;
 }
 
-long signed int log2(long signed int x) {
+long signed int __attribute__((weak)) log(long signed int x) {
+  return x;
+}
+
+long signed int __attribute__((weak)) log2(long signed int x) {
   return __k_ilog2(x);
 }
 
-signed int log2f(signed int x) {
-  return 0;
+signed int __attribute__((weak)) log2f(signed int x) {
+  return __k_ilog2(x);
 }
 
-signed int log2l(signed int x) {
-  return 0;
+signed int __attribute__((weak)) log2l(signed int x) {
+  return __k_ilog2(x);
 }

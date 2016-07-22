@@ -7,20 +7,34 @@
 
 #include <stdio.h>
 
-void test_cpp(void);
-
 extern "C" {
 
-int cxx_module_init(void *param) {
-  printf("Hello Module!\r\n");
+extern void __crt_init(void);
+extern void __crt_fini(void);
 
-  test_cpp();
+int __attribute__((weak)) kernel_module_init(void) {
+  printf("! Enter: %s\n", __FUNCTION__);
   return 0;
 }
 
-int cxx_module_deinit(void *param) {
-  printf("Goodbye!\r\n");
+int __attribute__((weak)) kernel_module_deinit(void) {
+  printf("! Enter: %s\n", __FUNCTION__);
   return 0;
+}
+
+int cxx_module_init(void *param) {
+  printf("! Enter: %s\n", __FUNCTION__);
+
+  __crt_init();
+  return kernel_module_init();
+}
+
+int cxx_module_deinit(void *param) {
+  printf("! Enter: %s\n", __FUNCTION__);
+
+  int rc = kernel_module_deinit();
+  __crt_fini();
+  return rc;
 }
 
 } /* extern "C" */

@@ -6,9 +6,9 @@
  */
 
 #include <k_io.h>
+
 #include <linux/module.h>
 #include <linux/kernel.h>
-#include <linux/random.h>
 #include <linux/version.h>
 
 int __k_vsnprintf(char *buf, size_t size, const char *fmt, va_list args) {
@@ -27,14 +27,27 @@ int __k_kstrtoul(const char *s, unsigned int base, unsigned long *res) {
 #endif
 }
 
-int __k_kstrtoll(const char *s, unsigned int base, long long *res) {
+int __k_kstrtoull(const char *s, unsigned int base, unsigned long long *res) {
 #if LINUX_VERSION_CODE < KERNEL_VERSION(3,0,0)
-  return strict_strtoul(s, base, res);
+  return strict_strtoull(s, base, res);
 #else
-  return kstrtoul(s, base, res);
+  return kstrtoull(s, base, res);
 #endif
 }
 
-void __k_get_random_bytes(void *buf, int nbytes) {
-  get_random_bytes(buf, nbytes);
+int __k_kstrtol(const char *s, unsigned int base, long *res) {
+#if LINUX_VERSION_CODE < KERNEL_VERSION(3,0,0) 
+  return strict_strtol(s, base, res);
+#else
+  return kstrtol(s, base, res);
+#endif
 }
+
+int __k_kstrtoll(const char *s, unsigned int base, long long *res) {
+#if LINUX_VERSION_CODE < KERNEL_VERSION(3,0,0)
+  return strict_strtoll(s, base, res);
+#else
+  return kstrtoll(s, base, res);
+#endif
+}
+

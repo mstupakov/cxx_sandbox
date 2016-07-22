@@ -8,7 +8,7 @@ $(TARGET)-objs := module.o
 $(TARGET)-objs += $(addprefix ../build/,$(E_OBJS))
 
 module:
-	make -C $(KERNEL_SRC) M=$(CURDIR) modules
+	$(MAKE) -C $(KERNEL_SRC) M=$(CURDIR) modules
 
 clean:
-	make -C $(KERNEL_SRC) M=$(CURDIR) clean
+	$(MAKE) -C $(KERNEL_SRC) M=$(CURDIR) clean

@@ -13,7 +13,7 @@ extern void __cxa_finalize(void *dso_handle);
 
 void *__dso_handle;
 
-int atexit(void (*func) (void)) {
+int __attribute__((weak)) atexit(void (*func) (void)) {
   return __cxa_atexit((void (*) (void *)) func, NULL,
                       &__dso_handle == NULL ? NULL : __dso_handle);
 }

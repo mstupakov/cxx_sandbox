@@ -7,18 +7,21 @@
 
 #include <unistd.h>
 #include <stdlib.h>
-#include <libgen.h>
 #include <string.h>
-#include <execinfo.h>
+#include <libgen.h>
+#include <errno.h>
 
 #include <sys/ioctl.h>
 #include <sys/mman.h>
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <sys/syscall.h>
 
 #include <k_io.h>
 #include <k_sort.h>
 #include <k_misc.h>
+
+int __errno;
 
 void __assert_fail(void) {
   printf("Assert: there is a BUG! The program MUST be terminated!\r\n");
@@ -27,65 +30,55 @@ void __assert_fail(void) {
   sleep(20);
 }
 
-long int strtol(const char *nptr, char **endptr, int base) {   
-  long res = 0;
-  __k_kstrtoul(nptr, base, &res);
-  return res;
+void __assert(const char *msg, const char *file, int line) {
+  __assert_fail();
 }
 
-long long int strtoll(const char *nptr, char **endptr, int base) {   
-  long long res = 0;
-  __k_kstrtoll(nptr, base, &res);
-  return res;
+int *__errno_location(void) {
+  return &__errno;
 }
 
-int rand(void) {
+int __attribute__((weak)) rand(void) {
   int i = 0;
-  
+
   __k_get_random_bytes(&i, sizeof(i));
   return i;
 }
 
-int rand_r(unsigned int *seedp) {
-  return 0;
+int __attribute__((weak)) rand_r(unsigned int *seedp) {
+  unsigned int value = *seedp;
+
+  __k_get_random_bytes(&value, sizeof(value));
+  *seedp = value;
+  return value;
 }
 
-void srand(unsigned int seed) {
+void __attribute__((weak)) srand(unsigned int seed) {
+  printf("Func: %s, line: %u\r\n", __PRETTY_FUNCTION__, __LINE__);
 }
 
-void qsort(void *base, size_t nmemb, size_t size,
+void __attribute__((weak)) qsort(void *base, size_t nmemb, size_t size,
            int (*compar)(const void *, const void *)) {
   __k_sort(base, nmemb, size, compar, NULL);
 }
 
-int close(int fd) {
+int __attribute__((weak)) close(int fd) {
   printf("Func: %s, line: %u\r\n", __PRETTY_FUNCTION__, __LINE__);
   return 0;
 }
 
-int open(const char *pathname, int flags, mode_t mode) {
+int __attribute__((weak)) open(const char *pathname, int flags, mode_t mode) {
   printf("Func: %s, line: %u\r\n", __PRETTY_FUNCTION__, __LINE__);
   return 0;
 }
 
-int msync(void *addr, size_t length, int flags) {
+ssize_t __attribute__((weak)) read(int fd, void *buf, size_t count) {
   printf("Func: %s, line: %u\r\n", __PRETTY_FUNCTION__, __LINE__);
-  return 0;
+  __errno = EINTR;
+  return -1;
 }
 
-char *strdup(const char *s) {
-  printf("Func: %s, line: %u\r\n", __PRETTY_FUNCTION__, __LINE__);
-  return 0;
-}
-
-ssize_t read(int fd, void *buf, size_t count) {
-  printf("Func: %s, line: %u\r\n", __PRETTY_FUNCTION__, __LINE__);
-  return 0;
-}
-
-ssize_t write(int fd, const void *buf, size_t count) {
-  printf("Func: %s, line: %u\r\n", __PRETTY_FUNCTION__, __LINE__);
-
+ssize_t __attribute__((weak)) write(int fd, const void *buf, size_t count) {
   if ((fd == 1) || (fd == 2)) {
     printf(buf);
   }
@@ -93,49 +86,65 @@ ssize_t write(int fd, const void *buf, size_t count) {
   return count;
 }
 
-void *mmap(void *addr, size_t length, int prot, int flags,
-           int fd, off_t offset) {
+int __attribute__((weak)) ioctl(int d, unsigned long request, ...) {
   printf("Func: %s, line: %u\r\n", __PRETTY_FUNCTION__, __LINE__);
   return 0;
 }
 
-int munmap(void *addr, size_t length) {
+off_t __attribute__((weak)) lseek(int fd, off_t offset, int whence) {
   printf("Func: %s, line: %u\r\n", __PRETTY_FUNCTION__, __LINE__);
   return 0;
 }
 
-char *strerror(int errnum) {
-  printf("Func: %s, line: %u\r\n", __PRETTY_FUNCTION__, __LINE__);
-  return 0;
+int __attribute__((weak)) isalnum(int x) {
+  return __k_isalnum(x);
 }
 
-int ioctl(int d, unsigned long request, ...) {
-  printf("Func: %s, line: %u\r\n", __PRETTY_FUNCTION__, __LINE__);
-  return 0;
+int __attribute__((weak)) isalpha(int x) {
+  return __k_isalpha(x);
 }
 
-off_t lseek(int fd, off_t offset, int whence) {
-  printf("Func: %s, line: %u\r\n", __PRETTY_FUNCTION__, __LINE__);
-  return 0;
+int __attribute__((weak)) isascii(int x) {
+  return __k_isascii(x);
 }
 
-int backtrace(void **buffer, int size) {
-  printf("Func: %s, line: %u\r\n", __PRETTY_FUNCTION__, __LINE__);
-  return 0;
+int __attribute__((weak)) iscntrl(int x) {
+  return __k_iscntrl(x);
 }
 
-char **backtrace_symbols(void *const *buffer, int size) {
-  printf("Func: %s, line: %u\r\n", __PRETTY_FUNCTION__, __LINE__);
-  return 0;
+int __attribute__((weak)) isdigit(int x) {
+  return __k_isdigit(x);
 }
 
-void *__memcpy_chk(void * dest, const void * src, size_t len, size_t destlen) {
-  printf("Func: %s, line: %u\r\n", __PRETTY_FUNCTION__, __LINE__);
-  return 0;
+int __attribute__((weak)) isgraph(int x) {
+  return __k_isgraph(x);
 }
 
-int *__errno_location(void) {
-  printf("Func: %s, line: %u\r\n", __PRETTY_FUNCTION__, __LINE__);
-  return 0;
+int __attribute__((weak)) islower(int x) {
+  return __k_islower(x);
+}
+
+int __attribute__((weak)) isprint(int x) {
+  return __k_isprint(x);
+}
+
+int __attribute__((weak)) ispunct(int x) {
+  return __k_ispunct(x);
+}
+
+int __attribute__((weak)) isspace(int x) {
+  return __k_isspace(x);
+}
+
+int __attribute__((weak)) isupper(int x) {
+  return __k_isupper(x);
+}
+
+int __attribute__((weak)) isxdigit(int x) {
+  return __k_isxdigit(x);
+}
+
+int __attribute__((weak)) tolower(int x) {
+  return __k_tolower(x);
 }
 

@@ -11,31 +11,42 @@
 
 #include <k_memory.h>
 
+#define KMALLOC_LIMIT 4000
+
 typedef struct {
   size_t size;
 } malloc_hdr_t;
 
-void *malloc(size_t sz) {
-  printf("Func: %s, line: %u, %u\r\n", __PRETTY_FUNCTION__, __LINE__, sz);
+void* __attribute__((weak)) malloc(size_t sz) {
+  void *p = NULL;
+  
+  if (sz < KMALLOC_LIMIT) {
+      p = __k_kmalloc(sz + sizeof(malloc_hdr_t));
+  } else {
+      p = __k_vmalloc(sz + sizeof(malloc_hdr_t));
+  }
 
-  void *p = __k_malloc(sz + sizeof(malloc_hdr_t));
+  memset(p + sizeof(malloc_hdr_t), 0, sz);
   ((malloc_hdr_t*) p)->size = sz;  
   return p + sizeof(malloc_hdr_t);
 }
 
-void free(void *p) {
-  printf("Func: %s, line: %u, %x\r\n", __PRETTY_FUNCTION__, __LINE__, p);
+void __attribute__((weak)) free(void *p) {
+  size_t size;
 
   if (!p) {
     return;
   }
-  
-  __k_free(p - sizeof(malloc_hdr_t));
+
+  size = ((malloc_hdr_t*) (p - sizeof(malloc_hdr_t)))->size;
+  if (size < KMALLOC_LIMIT) {
+      __k_kfree(p - sizeof(malloc_hdr_t)); 
+  } else {
+      __k_vfree(p - sizeof(malloc_hdr_t));
+  }
 }
 
-void *calloc(size_t nmemb, size_t sz) {
-  printf("Func: %s, line: %u\r\n", __PRETTY_FUNCTION__, __LINE__);
-
+void* __attribute__((weak)) calloc(size_t nmemb, size_t sz) {
   void *p = malloc(nmemb * sz);
 
   if (p) {
@@ -45,9 +56,7 @@ void *calloc(size_t nmemb, size_t sz) {
   return p;
 }
 
-void *realloc(void *p, size_t sz) {
-  printf("Func: %s, line: %u, %x, %u\r\n", __PRETTY_FUNCTION__, __LINE__, p, sz);
-
+void* __attribute__((weak)) realloc(void *p, size_t sz) {
   if (!p) {
     return malloc(sz);
   }
@@ -58,8 +67,6 @@ void *realloc(void *p, size_t sz) {
   }
 
   void *ptr = malloc(sz);
-
-  printf("Func: %s, line: %u, %p, %d\r\n", __FUNCTION__, __LINE__, p, sz);
 
   if (ptr) {
     size_t size = ((malloc_hdr_t*) (p - sizeof(malloc_hdr_t)))->size;
