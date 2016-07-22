@@ -1,20 +1,65 @@
 #!/bin/bash
 
-echo "CROSS_COMPILE: " ${CROSS_COMPILE}
-echo "NOSTDINC_FLAGS: " ${NOSTDINC_FLAGS}
-echo "KBUILD_CFLAGS: " ${KBUILD_CFLAGS}
-echo "LINUXINCLUDE: " ${LINUXINCLUDE}
+echo "CROSS_COMPILE  : " ${CROSS_COMPILE}
+echo "NOSTDINC_FLAGS : " ${NOSTDINC_FLAGS}
+echo "KBUILD_CFLAGS  : " ${KBUILD_CFLAGS}
+echo "LINUXINCLUDE   : " ${LINUXINCLUDE}
 
 echo K_CROSSCOMPILE := ${CROSS_COMPILE} > ${OUTPUT}
 echo K_NOSTDINC := ${NOSTDINC_FLAGS} >> ${OUTPUT}
 echo K_CFLAGS := ${KBUILD_CFLAGS} >> ${OUTPUT}
 
-INC=$(echo ${LINUXINCLUDE} | sed -n -e 's/.*-include//p1' | sed -e 's/^[ \t]*//' | awk '{print $1}')
-LXINCLUDE=$(echo ${LINUXINCLUDE} | sed "s|${INC}|${PWD}/${INC}|g")
-LXINCLUDE+=" $(echo ${KBUILD_CFLAGS} | grep -o '\-I\S*')"
-LXINCLUDE=$(echo ${LXINCLUDE} | sed "s|-I|-I/${PWD}/|g")
-LXINCLUDE=$(echo ${LXINCLUDE} | sed "s|${PWD}/${PWD}|${PWD}/|g")
+OBJ_PATH=${objtree}
 
-echo K_LXINCLUDE := ${LXINCLUDE} >> ${OUTPUT}
+if [ $OBJ_PATH == "." ];
+then
+  OBJ_PATH=${PWD}
+fi
 
-${CROSS_COMPILE}${_CC} $@
+OBJ_PATH=${OBJ_PATH}/
+
+echo $@ ${LXINCLUDE} ${KBUILD_CFLAGS} | awk -v var="$OBJ_PATH" '
+{
+  x = 1
+  while (x <= NF) {
+    if ($x == "-include") {
+      split($(x+1), chars, "")
+      if (chars[1] != "/") {
+        output_include = output_include " -include " var $(x+1)
+      } else {
+        output_include = output_include " -include " $(x+1)
+      }
+    }
+    x++
+  }
+}
+{
+  y = 1
+  while (y <= NF) {
+    if ($y == "-I") {
+      split($(y+1), chars, "")
+      if (chars[1] != "/") {
+        output_include = output_include " -I" var $(y+1)
+      } else {
+        output_include = output_include " -I" $(y+1)
+      }
+    } else if ($y ~ /-I/) {
+      split($(y), chars, "")
+      if (chars[3] != "/") {
+        output_include = output_include " " substr($y, 1, 2) var substr($y, 3)
+      } else {
+        output_include = output_include " " $y
+      }
+    }
+    y++
+  }
+}
+BEGIN {
+  output_include = ""
+}
+END {
+  print "K_LXINCLUDE :=" output_include
+}
+' >> ${OUTPUT}
+
+${_CC} $@
