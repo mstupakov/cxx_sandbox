@@ -7,10 +7,10 @@ SRCS := $(C_SRCS) $(CPP_SRCS)
 OBJS := $(C_SRCS:%.c=%.o) $(CPP_SRCS:%.cpp=%.o)
 
 %.o: %.c
-	$(CC) $(C_FLAGS) $(E_CFLAGS) -c $<
+	$(CC) $(C_FLAGS) $(E_CFLAGS) $(K_CFLAGS) -D___USER___ -c $<
 
 %.o: %.cpp
-	$(CC) $(CPP_FLAGS) $(E_CFLAGS) -c $<
+	$(CC) $(CPP_FLAGS) $(E_CFLAGS) $(K_CFLAGS) -D___USER___ -c $<
 
 all: $(OUTPUT)
 
