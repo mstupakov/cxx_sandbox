@@ -1,0 +1,48 @@
+The "cxx_sandbox" is an framework which allows to run C/C++ code in linux kernel space. 
+
+The framework supports:
+  - compiling C/C++ code;
+  - providing an access to integrated uStl;
+  - providing an access to STD headers;
+  - providing an access to linux kernel headers; 
+  - calling of Constructors/Destructors of global objects;
+  - calling of Constructors/Destructors of static objects inside fuctions;
+  - user extentions mechanism to override some framework's STD functions;
+
+
+The framework doesn't support:
+  - RTTI;
+  - C++ exceptions;
+  - including linux kernel headers into C++ code;
+  - mixing both STD and linux kernel headers in one C/C++ source file.
+
+
+The framework has been tested:
+  - linux kernel beginning 2.6.26 {2.6.x, 3.x, 4.x};
+  - GCC compiler beginning 4.1.2 {4.x, 5.x};
+  - C library: GNU C, uClibc;
+  - arhitectures: x86, x86_64, ARM, PPC, MIPS;
+
+
+How to use:
+  - Put your code under "payload/" folder;
+  - Update "payload/Makefile" (if needed);
+  - Implement your extensions unded "extensions/" folder (if needed);
+  - Run "make" command;
+  - Run "sudo {insmod / rmmod} module/kmodule.ko" command;
+  - See some output using "dmesg" command.
+
+
+The framework supports to specify:
+  - CROSS_COMPILE=path-to-toolchain;
+  - KERNEL_SOURCE=path-to-kernel;
+  - MAKE=path-to-make;
+  - TARGET=name-of-produced-module;
+  - EXTENSIONS=path-to-extensions;
+  - PAYLOAD=path-to-payload.
+
+
+Example of specifying compilation variables:
+  bash$ CROSS_COMPILE=/opt/x86_64_toolchain/bin/x86_64- make KERNEL_SRC=/development/linux-3.18.29/ TARGET=my_cxx_module \
+        PAYLOAD=/development/my-cxx-kernel-project/ EXTENSIONS=/development/my-cxx-kernel-project/extensions/
+
