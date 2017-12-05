@@ -52,6 +52,7 @@ E_CFLAGS += -fno-stack-protector
 E_CFLAGS += -fno-fast-math 
 E_CFLAGS += -msoft-float 
 E_CFLAGS += -Wno-undef
+E_CFLAGS += -Wno-error=incompatible-pointer-types
 E_CFLAGS += -O3 -nostdinc++
 E_CFLAGS += -D_FORTIFY_SOURCE=0
 E_CFLAGS += -D__NO_INLINE__ -D__KERNEL__ -DMODULE -Ddouble=int -Dfloat=int

@@ -46,7 +46,7 @@ void __k_getnstimeofday(struct __K_timespec *tp) {
   struct timespec _tp;
 
   getnstimeofday(&_tp);
-  memset(&tp, 0, sizeof(*tp));
+  memset(tp, 0, sizeof(*tp));
 
   tp->tv_sec = _tp.tv_sec;
   tp->tv_nsec = _tp.tv_nsec;
